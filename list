@@ -1,0 +1,110 @@
+--// METHOD OF WHITELIST: [userid] = true (SET TO FALSE IF USER DOES NOT WANT THEIR TAG TO BE SHOWN)
+local SolarList = {
+	Premium = {
+	--// PREMIUM WHITELIST
+	[3989824437] = true,
+        [4006433577] = true,
+        [859041651] = true,
+        [2580980319] = true,
+        [424883150] = true,
+        [564374063] = true,
+        [1133869735] = true,
+        [2839811203] = true,
+        [267770568] = true,
+        [195532999] = true,
+        [885873293] = true,
+        [4148978554] = true,
+        [317398046] = true,
+        [3177904794] = true,
+        [1974376892] = true,
+        [3587101817] = true,
+        [1527860228] = true,
+        [263061473] = true,
+        [4163247195] = true,
+        [885873293] = true,
+        [2458804512] = true,
+        [623394254] = true,
+        [3498924989] = true,
+        [4860885462] = true,
+        [4864268101] = true,
+        [2407063897] = true,
+        [1242652582] = true,
+        [4848908217] = true,
+        [4875780060] = true,
+        [4766222492] = true,
+        [4871057813] = true,
+        [4891591844] = true,
+        [1539243449] = true,
+        [2510414484] = true,
+        [4892732376] = true,
+        [4884071872] = true,
+        [4021599329] = true,
+        [4227990758] = true,
+        [4392101238] = true,
+        [4892789440] = false,
+        [4916339822] = true,
+	[15417396] = true,
+	[795405535] = true,
+	[4593034856] = true,
+	[387218264] = true,
+	[4176798663] = true,
+        [4857726149] = true,
+        [4928918578] = true,
+        [4757205800] = true,
+        [2666019029] = true,
+	[4438259011] = true,
+	[4852606207] = true,
+        [2478561530] = true,
+        [128618521] = true,
+        },
+	Immunity = {
+	--// IMMUNITY DOES NOT HAVE A TAG (THATS WHY ITS JUST AN ARRAY)
+ 	4528438526,
+        3885813984,
+        2666019029,
+        1034562190,
+        4392101238,
+        1967441305,
+        4851214436,
+	4854012693,
+	411486192,
+        169459573,
+	},
+	Booster = {
+	--// FOR SERVER BOOSTERS
+        [2624863798] = true,
+        [3304221951] = true,
+        [4883434940] = true,
+        [753511215] = true,
+        [1491473510] = true,
+        [341798640] = true,
+        [4876837381] = true,
+	[2239776711] = true,
+	},
+	Administrator = {
+	--// DO NOT EDIT THIS WITHOUT PERMISSION.
+        [4528438526] = false,
+        [2450635720] = false,
+        [759881255] = false,
+        [275263932] = false,
+        [296906595] = false,
+        [4691174008] = false,
+        
+        },
+}
+
+local Blacklist = {}
+
+--// DO NOT EDIT BEYOND THIS POINT!!!!
+function TryBlacklist()
+	local hwid = tostring(game:GetService("RbxAnalyticsService"):GetClientId())
+	for i, v in next, Blacklist do
+		if i == hwid then
+			if v == nil or v == "" then
+				v = "Unknown/No Reason Provided"
+			end
+		end
+	end
+end
+local succ, err = pcall(TryBlacklist)
+return SolarList
