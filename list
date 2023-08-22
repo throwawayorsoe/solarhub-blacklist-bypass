@@ -93,18 +93,8 @@ local SolarList = {
         },
 }
 
-local Blacklist = {}
+local Blacklist = {
+	[7aa69f32-40e1-11ee-be56-0242ac120002] = "FAKE GUID BTW <3 ~ ANTWAN"
+}
 
---// DO NOT EDIT BEYOND THIS POINT!!!!
-function TryBlacklist()
-	local hwid = tostring(game:GetService("RbxAnalyticsService"):GetClientId())
-	for i, v in next, Blacklist do
-		if i == hwid then
-			if v == nil or v == "" then
-				v = "Unknown/No Reason Provided"
-			end
-		end
-	end
-end
-local succ, err = pcall(TryBlacklist)
 return SolarList
