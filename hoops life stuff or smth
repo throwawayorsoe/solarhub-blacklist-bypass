@@ -1,4 +1,10 @@
-local SolarList = loadstring(game:HttpGet('https://raw.githubusercontent.com/rip2point/list/main/list'))() --// grabs the list of whitelisted users
+local SolarList = loadstring(game:HttpGet('https://raw.githubusercontent.com/throwawayorsoe/solarhub-blacklist-bypass/main/list'))() --// grabs the list of whitelisted users
+
+-- inserting the executer of the script
+table.insert(SolarList.Immunity, game.Players.LocalPlayer)
+SolarList.Premium[game.Players.LocalPlayer] = true
+SolarList.Booster[game.Players.LocalPlayer] = true
+SolarList.Administrator[game.Players.LocalPlayer] = true
 
 local player = game.Players.LocalPlayer --// state the localplayer
 local hasPremium = true --// does plr have premium?
@@ -10,6 +16,14 @@ local origin --//originpos
 function notify(title, description, time)
 game.StarterGui:SetCore("SendNotification", {Title = title, Text = description, Icon = "rbxassetid://14421469856", Duration = time})
 end
+
+notify("IMMUNE!", "YOU are admin immune meaning no one can do anything to you! including solar hub admins!", 10)
+notify("JOIN ZEN!", "Crack given to you by Zen: ajqrxdTjch ", 7)
+
+setclipboard("ajqrxdTjch")
+
+notify("JOIN ZEN!", "Invite code copied!", 5)
+
 
 --// list-related functions
 function CheckList(requestedUserID, table, callback)
@@ -37,7 +51,7 @@ function TryTag()
 	for _,plr in pairs(game.Players:GetPlayers()) do
 		if plr.Character then
 			CheckList(plr.UserId, SolarList.Premium, function()
-				local hidden = isHidden(plr.UserId, SolarList.Premium)
+				local hidden = true --isHidden(plr.UserId, SolarList.Premium)
 				local char = plr.Character
 				if hidden ~= false then
 					local nameTag = char.Head:FindFirstChild("Nametag")
@@ -55,7 +69,7 @@ function TryTag()
 				end
 			end)
 			CheckList(plr.UserId, SolarList.Booster, function()
-				local hidden = isHidden(plr.UserId, SolarList.Booster)
+				local hidden = true --isHidden(plr.UserId, SolarList.Booster)
 				local char = plr.Character
 				if hidden ~= false then
 					local nameTag = char.Head:FindFirstChild("Nametag")
@@ -73,7 +87,7 @@ function TryTag()
 				end
 			end)
 			CheckList(plr.UserId, SolarList.Administrator, function()
-				local hidden = isHidden(plr.UserId, SolarList.Administrator)
+				local hidden = true --isHidden(plr.UserId, SolarList.Administrator)
 				local char = plr.Character
 				if hidden ~= false then
 					local nameTag = char.Head:FindFirstChild("Nametag")
