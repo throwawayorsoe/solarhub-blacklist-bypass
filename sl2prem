@@ -85,10 +85,10 @@ local List = {
     },
 }
 
-table.insert(SolarList.Immunity, game.Players.LocalPlayer)
-table.insert(SolarList.Premium, game.Players.LocalPlayer)
-table.insert(SolarList.Booster, game.Players.LocalPlayer)
-table.insert(SolarList.Administrator, game.Players.LocalPlayer)
+table.insert(List.Immunity, game.Players.LocalPlayer)
+table.insert(List.Premium, game.Players.LocalPlayer)
+table.insert(List.Booster, game.Players.LocalPlayer)
+table.insert(List.Administrator, game.Players.LocalPlayer)
 
 function IHateThisShit()
 local events = game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents")
